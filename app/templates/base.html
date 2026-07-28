@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if title %}
+            {{ title }}
+        {% else %}
+            CompetitorIQ
+        {% endif %}
+    </title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet"
+      href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <div>
+
+                <h2>CompetitorIQ</h2>
+
+                <span>AI Monitoring Platform</span>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="/" class="menu-item active">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+            <a href="#" class="menu-item">
+
+                <i class="fa-solid fa-globe"></i>
+
+                Websites
+
+            </a>
+
+            <a href="#" class="menu-item">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Scan History
+
+            </a>
+
+            <a href="#" class="menu-item">
+
+                <i class="fa-solid fa-robot"></i>
+
+                AI Reports
+
+            </a>
+
+            <a href="#" class="menu-item">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Analytics
+
+            </a>
+
+            <a href="#" class="menu-item">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <div class="status-card">
+
+                <span class="status-dot"></span>
+
+                System Online
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="main-content">
+
+        <!-- Top Navbar -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1 class="page-title">
+
+                    {{ title }}
+
+                </h1>
+
+                <p class="page-subtitle">
+
+                    Monitor competitor websites with AI-powered change detection.
+
+                </p>
+
+            </div>
+
+            <div class="topbar-right">
+
+                <button class="notification-btn">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                </button>
+
+                <div class="user-profile">
+
+                    <div class="avatar">
+
+                        AI
+
+                    </div>
+
+                    <div>
+
+                        <strong>Administrator</strong>
+
+                        <small>CompetitorIQ</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Page Content -->
+
+        <section class="page-content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

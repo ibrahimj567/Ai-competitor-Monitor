@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+.env/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Screenshots & generated files
+storage/
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+
+# Environment
+.env
+
+# Build
+build/
+dist/
+
+*.zip

@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ===========================
+     Statistics
+============================ -->
+
+<div class="stats-grid">
+
+    <!-- Total Websites -->
+    <div class="stat-card">
+        <div class="stat-icon blue">
+            🌐
+        </div>
+
+        <div class="stat-content">
+            <h3>Total Websites</h3>
+            <h2>{{ stats.total_websites }}</h2>
+        </div>
+    </div>
+
+    <!-- Total Scans -->
+    <div class="stat-card">
+        <div class="stat-icon purple">
+            📈
+        </div>
+
+        <div class="stat-content">
+            <h3>Total Scans</h3>
+            <h2>{{ stats.total_scans }}</h2>
+        </div>
+    </div>
+
+    <!-- Changes Today -->
+    <div class="stat-card">
+        <div class="stat-icon orange">
+            ⚡
+        </div>
+
+        <div class="stat-content">
+            <h3>Changes Today</h3>
+            <h2>{{ stats.changes_today }}</h2>
+        </div>
+    </div>
+
+    <!-- High Alerts -->
+    <div class="stat-card">
+        <div class="stat-icon red">
+            🚨
+        </div>
+
+        <div class="stat-content">
+            <h3>High Alerts</h3>
+            <h2>{{ stats.high_alerts }}</h2>
+        </div>
+    </div>
+
+    <!-- Average Scan Time -->
+    <div class="stat-card">
+        <div class="stat-icon green">
+            ⏱</div>
+
+        <div class="stat-content">
+            <h3>Average Scan Time</h3>
+            <h2>{{ stats.average_scan_time }}</h2>
+        </div>
+    </div>
+
+    <!-- Next Scan -->
+    <div class="stat-card">
+        <div class="stat-icon indigo">
+            🕒
+        </div>
+
+        <div class="stat-content">
+            <h3>Next Scan</h3>
+            <h2>{{ stats.next_scan }}</h2>
+        </div>
+    </div>
+    
+    <form action="/add" method="POST" class="website-form">
+
+        <input
+            type="url"
+            name="url"
+            placeholder="https://example.com"
+            required>
+
+        <button type="submit">
+            <i class="fa-solid fa-plus"></i>
+            Add Website
+        </button>
+
+    </form>
+
+</div>
+
+<!-- ===========================
+     Website Table
+============================ -->
+
+<div class="section">
+
+    <h2>
+
+        <i class="fa-solid fa-globe"></i>
+
+        Monitored Websites
+
+    </h2>
+
+    <table>
+
+        <thead>
+
+        <tr>
+
+            <th>ID</th>
+
+            <th>Website</th>
+
+            <th>Status</th>
+
+            <th>Severity</th>
+
+            <th>Last Scan</th>
+
+            <th>Next Scan</th>
+
+            <th>Frequency</th>
+
+            <th>Duration</th>
+
+            <th>Actions</th>
+
+        </tr>
+
+        </thead>
+        
+        <tbody>
+
+        {% if websites %}
+
+            {% for website in websites %}
+
+            {% set latest = website.snapshots|last %}
+
+            <tr>
+
+                <td>
+
+                    #{{ website.id }}
+
+                </td>
+
+                <td>
+
+                    <strong>
+
+                        {{ website.url }}
+
+                    </strong>
+
+                </td>
+
+                <td>
+
+                    {% if website.status == "Scanned" %}
+
+                        <span class="badge badge-success">
+
+                            Completed
+
+                        </span>
+
+                    {% elif website.status == "Scanning" %}
+
+                        <span class="badge badge-warning">
+
+                            Scanning
+
+                        </span>
+
+                    {% elif website.status == "Failed" %}
+
+                        <span class="badge badge-danger">
+
+                            Failed
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-info">
+
+                            {{ website.status }}
+
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if latest %}
+
+                        {% if latest.severity == "High" %}
+
+                            <span class="badge badge-danger">
+
+                                🔴 High
+
+                            </span>
+
+                        {% elif latest.severity == "Medium" %}
+
+                            <span class="badge badge-warning">
+
+                                🟡 Medium
+
+                            </span>
+
+                        {% elif latest.severity == "Low" %}
+
+                            <span class="badge badge-success">
+
+                                🟢 Low
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge badge-info">
+
+                                -
+
+                            </span>
+
+                        {% endif %}
+
+                    {% else %}
+
+                        <span class="badge badge-info">
+
+                            Never Scanned
+
+                        </span>
+
+                    {% endif %}
+
+
+                </td>
+
+                <td>
+                    {% if website.last_scan %}
+
+                        {{ website.last_scan.strftime("%Y-%m-%d %H:%M:%S") }}
+
+                    {% else %}
+
+                        Never
+
+                    {% endif %}
+                </td>
+                
+                <td>
+
+                    {% if website.next_scan %}
+
+                        {{ website.next_scan.strftime("%d %b %I:%M %p") }}
+
+                    {% else %}
+
+                        -
+
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {{ website.scan_frequency }} min
+
+                </td>
+
+                <td>
+
+                    {% if website.last_scan_duration %}
+
+                        {{ "%.2f"|format(website.last_scan_duration) }} sec
+
+                    {% else %}
+
+                    -
+
+                    {% endif %}
+
+                </td>
+                
+                <td>
+                    <a
+                        href="/scan/{{ website.id }}"
+                        class="action-btn scan-btn">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                        Scan
+
+                    </a>
+
+                    <!-- This route will be created in Part 2 -->
+
+                    <a
+                        href="#"
+                        class="action-btn view-btn">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        History
+
+                    </a>
+
+                    <a
+                        href="/delete/{{ website.id }}"
+                        class="action-btn delete-btn"
+                        onclick="return confirm('Delete this website?');">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Delete
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <tr>
+
+                <td colspan="9" style="text-align:center;padding:40px;">
+
+                    <i class="fa-solid fa-globe"
+                       style="font-size:40px;color:#cbd5e1;"></i>
+
+                    <br><br>
+
+                    <strong>
+
+                        No websites added yet
+
+                    </strong>
+
+                    <br>
+
+                    Add your first competitor website above.
+
+                </td>
+
+            </tr>
+
+        {% endif %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- ===========================
+     Recent Activity
+============================ -->
+
+<div class="section">
+
+    <h2>
+
+        <i class="fa-solid fa-clock-rotate-left"></i>
+
+        Recent Activity
+
+    </h2>
+
+    <div class="activity-list">
+
+        {% if stats.recent_activity %}
+
+            {% for snapshot in stats.recent_activity %}
+
+            <div class="activity-item">
+
+                <div class="activity-icon">
+
+                    {% if snapshot.scan_status == "Completed" %}
+
+                        ✅
+
+                    {% elif snapshot.scan_status == "Failed" %}
+
+                        ❌
+
+                    {% else %}
+
+                        📄
+
+                    {% endif %}
+
+                </div>
+
+                <div class="activity-content">
+
+                    <h4>
+
+                        {{ snapshot.website.url }}
+
+                    </h4>
+
+                    <p>
+
+                        {{ snapshot.created_at.strftime("%d %b %Y %I:%M %p") }}
+
+                    </p>
+
+                    {% if snapshot.severity %}
+
+                        <span class="badge badge-info">
+
+                            {{ snapshot.severity }}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No activity available.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+{% endblock %}
