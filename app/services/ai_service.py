@@ -8,6 +8,7 @@ from app.core.config import settings
 class AIService:
 
     def __init__(self):
+        print("OPENAI_API_KEY loaded:", bool(settings.OPENAI_API_KEY))
         self.client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
     def summarize_changes(self, diff_text: str):
